@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux"
 import { logout } from "../../store/slices/authSlice"
 import { EvaluationModal } from "./evaluation-modal"
 import { BookOpen, Users, Filter, Star, Github, FileText, LogOut, Loader2 } from "lucide-react"
-import { fetchDashboardStats, fetchInstructorCourses, fetchFilteredSubmissions, UPLOAD_BASE_URL } from "../../utils/api"
+import { fetchDashboardStats, fetchInstructorCourses, fetchFilteredSubmissions } from "../../utils/api"
 
 interface DashboardStats {
   total: number
@@ -286,7 +286,7 @@ export function InstructorDashboard() {
                       <div className="flex items-center gap-2">
                         <FileText className="h-4 w-4" />
                         <a
-                          href={`${UPLOAD_BASE_URL}${submission.fileUrl}`}
+                          href={submission.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline text-sm"

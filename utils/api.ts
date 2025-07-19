@@ -1,6 +1,6 @@
 // API configuration and utilities
 export const API_BASE_URL = "https://oxeir-task-submit-backend-diksha-pa.vercel.app/api"
-export const UPLOAD_BASE_URL = "https://oxeir-task-submit-backend-diksha-pa.vercel.app"
+// export const API_BASE_URL = "http://localhost:5000/api"
 
 export const API_ENDPOINTS = {
   LOGIN: `${API_BASE_URL}/auth/login`,

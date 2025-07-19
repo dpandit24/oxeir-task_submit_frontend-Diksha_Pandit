@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Slider } from "@/components/ui/slider"
 import { X, Plus, Github, FileText } from "lucide-react"
-import { UPLOAD_BASE_URL, evaluateSubmission } from "../../utils/api"
+import { evaluateSubmission } from "../../utils/api"
 
 interface ApiSubmission {
   _id: string
@@ -158,7 +158,7 @@ export function EvaluationModal({
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <a
-                href={`${UPLOAD_BASE_URL}${submission.fileUrl}`}
+                href={submission.fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline text-sm"

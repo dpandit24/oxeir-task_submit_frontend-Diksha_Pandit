@@ -8,7 +8,7 @@ import { useAppSelector, useAppDispatch } from "../../hooks/redux"
 import { fetchCoursesAsync } from "../../store/slices/coursesSlice"
 import { SubmissionModal } from "./submission-modal"
 import { BookOpen, Upload, Eye, Star, Loader2, FileText, Github } from "lucide-react"
-import { fetchUserSubmissions, UPLOAD_BASE_URL } from "../../utils/api"
+import { fetchUserSubmissions } from "../../utils/api"
 
 interface ApiSubmission {
   _id: string
@@ -168,7 +168,7 @@ export function LearnerDashboard() {
                         <div className="text-sm">
                           <span className="font-medium">File: </span>
                           <a
-                            href={`${UPLOAD_BASE_URL}${submission.fileUrl}`}
+                            href={submission.fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline flex items-center gap-1"
