@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { API_ENDPOINTS } from "../../utils/api"
 
 export interface User {
   id: string
@@ -46,7 +47,7 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { reje
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,9 +61,10 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { reje
         return rejectWithValue(data.message || "Login failed")
       }
 
-      // Store token in localStorage
+      // Store token and user data in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
       }
 
       return data
@@ -77,7 +79,7 @@ export const signupUser = createAsyncThunk<AuthResponse, SignupCredentials, { re
   "auth/signupUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch(API_ENDPOINTS.SIGNUP, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,9 +93,10 @@ export const signupUser = createAsyncThunk<AuthResponse, SignupCredentials, { re
         return rejectWithValue(data.message || "Signup failed")
       }
 
-      // Store token in localStorage
+      // Store token and user data in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
       }
 
       return data
@@ -114,6 +117,7 @@ const authSlice = createSlice({
       state.error = null
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token")
+        localStorage.removeItem("user")
       }
     },
     clearError: (state) => {
@@ -123,9 +127,18 @@ const authSlice = createSlice({
     checkAuth: (state) => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem("token")
+        const userData = localStorage.getItem("user")
         if (token) {
           state.token = token
           state.isAuthenticated = true
+          // Restore user data from localStorage if available
+          if (userData) {
+            try {
+              state.user = JSON.parse(userData)
+            } catch (error) {
+              console.error("Failed to parse user data from localStorage")
+            }
+          }
         }
       }
       state.isHydrated = true
