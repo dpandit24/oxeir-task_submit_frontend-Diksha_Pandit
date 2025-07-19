@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { API_ENDPOINTS } from "../../utils/api"
 
 export interface User {
   id: string
@@ -46,7 +47,7 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { reje
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export const signupUser = createAsyncThunk<AuthResponse, SignupCredentials, { re
   "auth/signupUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch(API_ENDPOINTS.SIGNUP, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
