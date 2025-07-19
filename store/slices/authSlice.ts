@@ -61,9 +61,10 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginCredentials, { reje
         return rejectWithValue(data.message || "Login failed")
       }
 
-      // Store token in localStorage
+      // Store token and user data in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
       }
 
       return data
@@ -92,9 +93,10 @@ export const signupUser = createAsyncThunk<AuthResponse, SignupCredentials, { re
         return rejectWithValue(data.message || "Signup failed")
       }
 
-      // Store token in localStorage
+      // Store token and user data in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
       }
 
       return data
@@ -115,6 +117,7 @@ const authSlice = createSlice({
       state.error = null
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token")
+        localStorage.removeItem("user")
       }
     },
     clearError: (state) => {
@@ -124,9 +127,18 @@ const authSlice = createSlice({
     checkAuth: (state) => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem("token")
+        const userData = localStorage.getItem("user")
         if (token) {
           state.token = token
           state.isAuthenticated = true
+          // Restore user data from localStorage if available
+          if (userData) {
+            try {
+              state.user = JSON.parse(userData)
+            } catch (error) {
+              console.error("Failed to parse user data from localStorage")
+            }
+          }
         }
       }
       state.isHydrated = true
